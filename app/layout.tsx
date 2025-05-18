@@ -10,7 +10,7 @@ import type React from "react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Flowers&Saints Dashboard",
+  title: "Financial - dashboard",
   description: "A modern, responsive financial dashboard",
     generator: 'v0.dev'
 }

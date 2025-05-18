@@ -34,9 +34,9 @@ export interface UserSettings {
 }
 
 const defaultSettings: UserSettings = {
-  avatar: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/38184074.jpg-M4vCjTSSWVw5RwWvvmrxXBcNVU8MBU.jpeg",
-  fullName: "Dollar Singh",
-  email: "dollar.singh@example.com",
+  avatar: "https://randomuser.me/api/portraits/men/11.jpg",
+  fullName: "John Doe",
+  email: "john.doe@example.com",
   phone: "+1 (555) 123-4567",
   timezone: "utc-8",
   language: "en",
@@ -74,16 +74,25 @@ interface SettingsContextType {
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined)
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = useState<UserSettings>(() => {
-    // Try to load settings from localStorage during initialization
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings)
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const savedSettings = localStorage.getItem("userSettings")
-      if (savedSettings) {
-        return JSON.parse(savedSettings)
+      if (!savedSettings) {
+        localStorage.setItem("userSettings", JSON.stringify(defaultSettings))
+        setSettings(defaultSettings)
+      } else {
+        const parsed = JSON.parse(savedSettings)
+        if (parsed.fullName !== defaultSettings.fullName || parsed.avatar !== defaultSettings.avatar) {
+          localStorage.setItem("userSettings", JSON.stringify(defaultSettings))
+          setSettings(defaultSettings)
+        } else {
+          setSettings(parsed)
+        }
       }
     }
-    return defaultSettings
-  })
+  }, [])
 
   // Save settings to localStorage whenever they change
   useEffect(() => {
