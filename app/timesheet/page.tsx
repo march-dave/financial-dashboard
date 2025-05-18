@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { Edit2, Trash2, Plus } from "lucide-react"
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 
 interface TimesheetEntry {
   id: number
@@ -141,42 +142,42 @@ export default function TimesheetPage() {
         </form>
       )}
       <div className="border rounded-md overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">Employee</th>
-              <th className="px-4 py-2">Project</th>
-              <th className="px-4 py-2">Total Hours Work</th>
-              <th className="px-4 py-2">Hours Work / Project</th>
-              <th className="px-4 py-2">Total SR&ED Hours</th>
-              <th className="px-4 py-2">% per Project</th>
-              <th className="px-4 py-2">SR&ED Amount / Project</th>
-              <th className="px-4 py-2">Daily Hours</th>
-              <th className="px-4 py-2">Weekly Work Description</th>
-              <th className="px-4 py-2">Employee Work Description</th>
-              <th className="px-4 py-2">Date</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Employee</TableHead>
+              <TableHead>Project</TableHead>
+              <TableHead>Total Hours Work</TableHead>
+              <TableHead>Hours Work / Project</TableHead>
+              <TableHead>Total SR&ED Hours</TableHead>
+              <TableHead>% per Project</TableHead>
+              <TableHead>SR&ED Amount / Project</TableHead>
+              <TableHead>Daily Hours</TableHead>
+              <TableHead>Weekly Work Description</TableHead>
+              <TableHead>Employee Work Description</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {timesheetData.map((entry) => {
               const emp = employees.find(e => e.id === entry.employee_id)
               return (
-                <tr key={entry.id}>
-                  <td className="px-4 py-2">{entry.id}</td>
-                  <td className="px-4 py-2">{emp ? emp.name : entry.employee_id}</td>
-                  <td className="px-4 py-2">{entry.project}</td>
-                  <td className="px-4 py-2">{entry.total_hours_work}</td>
-                  <td className="px-4 py-2">{entry.project_hours}</td>
-                  <td className="px-4 py-2">{entry.sred_hours}</td>
-                  <td className="px-4 py-2">{calcPercentage(entry).toFixed(2)}%</td>
-                  <td className="px-4 py-2">{calcSredAmount(entry).toLocaleString(undefined, { style: "currency", currency: "USD" })}</td>
-                  <td className="px-4 py-2">{entry.daily_hours}</td>
-                  <td className="px-4 py-2">{entry.weekly_description}</td>
-                  <td className="px-4 py-2">{entry.employee_description}</td>
-                  <td className="px-4 py-2">{entry.work_date}</td>
-                  <td className="px-4 py-2 space-x-2 flex">
+                <TableRow key={entry.id}>
+                  <TableCell>{entry.id}</TableCell>
+                  <TableCell>{emp ? emp.name : entry.employee_id}</TableCell>
+                  <TableCell>{entry.project}</TableCell>
+                  <TableCell>{entry.total_hours_work}</TableCell>
+                  <TableCell>{entry.project_hours}</TableCell>
+                  <TableCell>{entry.sred_hours}</TableCell>
+                  <TableCell>{calcPercentage(entry).toFixed(2)}%</TableCell>
+                  <TableCell>{calcSredAmount(entry).toLocaleString(undefined, { style: "currency", currency: "USD" })}</TableCell>
+                  <TableCell>{entry.daily_hours}</TableCell>
+                  <TableCell>{entry.weekly_description}</TableCell>
+                  <TableCell>{entry.employee_description}</TableCell>
+                  <TableCell>{entry.work_date}</TableCell>
+                  <TableCell className="space-x-2 flex">
                     <button
                       className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full"
                       onClick={() => handleEdit(entry)}
@@ -192,16 +193,16 @@ export default function TimesheetPage() {
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               )
             })}
-            <tr>
-              <td colSpan={7} className="text-right font-medium">Total SR&ED Amount</td>
-              <td colSpan={6} className="font-medium">{totalSredAmount.toLocaleString(undefined, { style: "currency", currency: "USD" })}</td>
-            </tr>
-          </tbody>
-        </table>
+            <TableRow>
+              <TableCell colSpan={7} className="text-right font-medium">Total SR&ED Amount</TableCell>
+              <TableCell colSpan={6} className="font-medium">{totalSredAmount.toLocaleString(undefined, { style: "currency", currency: "USD" })}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
     </div>
   )
