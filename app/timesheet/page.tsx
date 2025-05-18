@@ -82,8 +82,9 @@ export default function TimesheetPage() {
   }
 
   const handleEdit = (entry: TimesheetEntry) => {
-    setForm({ ...entry })
-    setEditingId(entry.id)
+    const { id, ...rest } = entry;
+    setForm(rest);
+    setEditingId(entry.id);
   }
 
   const handleDelete = async (id: number) => {
@@ -172,34 +173,36 @@ export default function TimesheetPage() {
                   <TableCell>{entry.project_hours}</TableCell>
                   <TableCell>{entry.sred_hours}</TableCell>
                   <TableCell>{calcPercentage(entry).toFixed(2)}%</TableCell>
-                  <TableCell>{calcSredAmount(entry).toLocaleString(undefined, { style: "currency", currency: "USD" })}</TableCell>
+                  <TableCell>{calcSredAmount(entry).toLocaleString("en-US", { style: "currency", currency: "USD" })}</TableCell>
                   <TableCell>{entry.daily_hours}</TableCell>
                   <TableCell>{entry.weekly_description}</TableCell>
                   <TableCell>{entry.employee_description}</TableCell>
                   <TableCell>{entry.work_date}</TableCell>
-                  <TableCell className="space-x-2 flex">
-                    <button
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full"
-                      onClick={() => handleEdit(entry)}
-                      title="Edit"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
-                      onClick={() => handleDelete(entry.id)}
-                      disabled={loading}
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                  <TableCell>
+                    <div className="space-x-2 flex">
+                      <button
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full"
+                        onClick={() => handleEdit(entry)}
+                        title="Edit"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
+                        onClick={() => handleDelete(entry.id)}
+                        disabled={loading}
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </TableCell>
                 </TableRow>
               )
             })}
             <TableRow>
               <TableCell colSpan={7} className="text-right font-medium">Total SR&ED Amount</TableCell>
-              <TableCell colSpan={6} className="font-medium">{totalSredAmount.toLocaleString(undefined, { style: "currency", currency: "USD" })}</TableCell>
+              <TableCell colSpan={6} className="font-medium">{totalSredAmount.toLocaleString("en-US", { style: "currency", currency: "USD" })}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
