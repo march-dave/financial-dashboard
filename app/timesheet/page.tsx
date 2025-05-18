@@ -85,6 +85,7 @@ export default function TimesheetPage() {
     const { id, ...rest } = entry;
     setForm(rest);
     setEditingId(entry.id);
+    setShowForm(true);
   }
 
   const handleDelete = async (id: number) => {
